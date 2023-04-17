@@ -1,0 +1,15 @@
+.friends-list-container {
+  height: 300px;
+  overflow-y: auto;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.friend-item:last-child {
+  border-bottom: none;
+}

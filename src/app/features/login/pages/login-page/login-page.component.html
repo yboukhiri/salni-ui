@@ -1,0 +1,60 @@
+<div id="login-page">
+  <div id="app-name">
+    <h1>Salni</h1>
+    <h2>Authentication</h2>
+  </div>
+  <div id="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div>
+        <!-- <span>Email</span> -->
+        <input type="email" formControlName="email" placeholder="Email" />
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid &&
+            (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+          "
+        >
+          <div *ngIf="loginForm.get('email')?.hasError('required')">
+            Email is required.
+          </div>
+          <div *ngIf="loginForm.get('email')?.hasError('email')">
+            Invalid email format.
+          </div>
+        </div>
+      </div>
+      <div>
+        <!-- <span>Password</span> -->
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            (loginForm.get('password')?.dirty ||
+              loginForm.get('password')?.touched)
+          "
+        >
+          <div *ngIf="loginForm.get('password')?.hasError('required')">
+            Password is required.
+          </div>
+          <div *ngIf="loginForm.get('password')?.hasError('minlength')">
+            Password must be at least 6 characters long.
+          </div>
+        </div>
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+    <div id="register">
+      <span>Don't have an account?</span>
+      <button (click)="showRegistrationModal()">Register</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="showRegistration">
+  <app-registration-modal
+    (register)="register()"
+    (cancel)="hideRegistrationModal()"
+  ></app-registration-modal>
+</div>

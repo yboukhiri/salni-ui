@@ -1,0 +1,40 @@
+.transaction-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transaction-bubble {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.transaction-right {
+  background-color: #007bff;
+  color: white;
+  align-self: flex-end;
+}
+
+.transaction-left {
+  background-color: #f2f2f2;
+  color: black;
+  align-self: flex-start;
+}
+
+.transaction-amount {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.transaction-time {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.transaction-status {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: #ffc107;
+  font-weight: bold;
+}

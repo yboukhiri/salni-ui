@@ -1,0 +1,29 @@
+<div
+  *ngFor="let transaction of deal?.transactions"
+  class="transaction-container"
+>
+  <div
+    *ngIf="transaction.fromUserId === withUserOfId"
+    class="transaction-bubble transaction-left"
+  >
+    <div class="transaction-amount">{{ transaction.amount }} $</div>
+    <div class="transaction-time">
+      {{ transaction.createdAt | date : "shortTime" }}
+    </div>
+    <div class="transaction-status" *ngIf="!isTransactionAccepted(transaction)">
+      Pending
+    </div>
+  </div>
+  <div
+    *ngIf="transaction.toUserId === withUserOfId"
+    class="transaction-bubble transaction-right"
+  >
+    <div class="transaction-amount">{{ transaction.amount }} $</div>
+    <div class="transaction-time">
+      {{ transaction.createdAt | date : "shortTime" }}
+    </div>
+    <div class="transaction-status" *ngIf="!isTransactionAccepted(transaction)">
+      Waiting for approval
+    </div>
+  </div>
+</div>

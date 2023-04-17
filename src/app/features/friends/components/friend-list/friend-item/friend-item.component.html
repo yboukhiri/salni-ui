@@ -1,0 +1,8 @@
+<div *ngIf="friend" class="friend-item-container">
+  <img
+    [src]="'/assets/images/avatar.jpg'"
+    alt="Profile Picture"
+    class="profile-picture"
+  />
+  <div class="friend-name">{{ friend.firstName }} {{ friend.lastName }}</div>
+</div>
