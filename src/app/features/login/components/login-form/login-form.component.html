@@ -1,4 +1,7 @@
 <div class="login-form">
+  <h2>
+    Sign in 
+  </h2>
   <form [formGroup]="loginForm" (ngSubmit)="login()">
     <div>
       <input type="email" formControlName="email" placeholder="Email" />
@@ -10,6 +13,10 @@
         placeholder="Password"
       />
     </div>
-    <button type="submit">Login</button>
   </form>
+  <div class="call-to-action-form">
+    <button class="login-action" type="submit">Login</button>
+    <a href="#"> forget password</a>
+    <button class="sign-up-action" type="submit">Create account</button>
+  </div>
 </div>
