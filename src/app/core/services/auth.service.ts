@@ -3,31 +3,36 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Login } from '../models/login.model';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/generated-api';
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
-  constructor(private http: HttpClient) {}
+export class AuthenticationService {
+  constructor(private http: HttpClient, private authApiService: AuthService) {}
 
-  private isAuthenticatedSubject: BehaviorSubject<boolean> =
+  private isAuthenticatedSubject$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-  public isAuthenticated: Observable<boolean> =
-    this.isAuthenticatedSubject.asObservable();
+  public isAuthenticated$: Observable<boolean> =
+    this.isAuthenticatedSubject$.asObservable();
 
-  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+  private currentUserSubject$: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );
-  public currentUser: Observable<string> =
-    this.currentUserSubject.asObservable();
+  public currentUser$: Observable<string> =
+    this.currentUserSubject$.asObservable();
 
   public authenticate(login: Login) {
-    const url = `${environment.apiUrl}/auth`;
-    this.http.post(url + '/login', login).subscribe((response: any) => {
-      localStorage.setItem('auth_token', response.access_token);
-      this.isAuthenticatedSubject.next(true);
-      this.http.get(url).subscribe((response: any) => {
-        this.currentUserSubject.next(response);
-        console.log('user', this.currentUserSubject.value);
-      });
+    this.authApiService.authControllerLogin(login).subscribe({
+      next: (response) => {
+        console.log(response);
+        localStorage.setItem('auth_token', response.access_token);
+        this.isAuthenticatedSubject$.next(true);
+        this.authApiService.authControllerGetCurrentUser().subscribe({
+          next: (response) => {
+            this.currentUserSubject$.next(response);
+            console.log('user', this.currentUserSubject$.value);
+          },
+        });
+      },
     });
   }
 }
