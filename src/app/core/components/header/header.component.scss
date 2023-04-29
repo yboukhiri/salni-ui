@@ -2,8 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
-  background-color: #003049;
+  background-color: var(--primary-color);
   color: #fff;
 }
 
@@ -12,6 +11,10 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
+}
+
+.image-logo {
+  width: 100px;
 }
 
 .navigation ul {

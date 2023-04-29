@@ -9,6 +9,7 @@ import { HomePageModule } from './features/home-page/home-page.module';
 import { LoginModule } from './features/login/login.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationService } from './core/services/auth.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import { AuthenticationService } from './core/services/auth.service';
     LoginModule,
     HomePageModule,
     BrowserAnimationsModule,
+    FontAwesomeModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -23,16 +23,22 @@ export class AuthenticationService {
   public authenticate(login: Login) {
     this.authApiService.authControllerLogin(login).subscribe({
       next: (response) => {
-        console.log(response);
         localStorage.setItem('auth_token', response.access_token);
         this.isAuthenticatedSubject$.next(true);
         this.authApiService.authControllerGetCurrentUser().subscribe({
           next: (response) => {
             this.currentUserSubject$.next(response);
-            console.log('user', this.currentUserSubject$.value);
+            return true;
+          },
+          error: (error) => {
+            return false;
           },
         });
       },
+      error: (error) => {
+        return false;
+      },
     });
+    return false;
   }
 }

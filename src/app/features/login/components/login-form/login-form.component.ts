@@ -42,17 +42,8 @@ export class LoginFormComponent implements OnInit {
       }
       return;
     }
-    this.authenticationService.authenticate(this.loginForm.value);
+    if (!this.authenticationService.authenticate(this.loginForm.value)) {
+      this.snackbarService.error('Invalid credentials');
+    }
   }
-
-  clicked() {
-    window.alert('You clicked me!');
-  }
-
-  items = [
-    { name: 'John', age: 25, job: 'Designer' },
-    { name: 'Jane', age: 24, job: 'Developer' },
-    { name: 'Jim', age: 26, job: 'Manager' },
-    { name: 'Kate', age: 21, job: 'Artist' },
-  ];
 }

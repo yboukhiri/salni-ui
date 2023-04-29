@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Friend } from '../../models/friend.model';
-import { FriendsService } from '../../services/friends.service';
+import { UserDto, UsersService } from 'src/app/generated-api';
 
 @Component({
   selector: 'app-friend-list',
@@ -9,12 +8,12 @@ import { FriendsService } from '../../services/friends.service';
   styleUrls: ['./friend-list.component.scss'],
 })
 export class FriendListComponent implements OnInit {
-  constructor(private friendsService: FriendsService) {}
+  constructor(private usersService: UsersService) {}
 
-  friends: Friend[] = [];
+  friends: UserDto[] = [];
 
   ngOnInit(): void {
-    this.friendsService.getFriends().subscribe((friends) => {
+    this.usersService.usersControllerGetFriends().subscribe((friends) => {
       this.friends = friends;
     });
   }
