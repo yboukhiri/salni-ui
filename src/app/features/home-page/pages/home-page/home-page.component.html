@@ -8,6 +8,12 @@
 
 <app-header></app-header>
 <div class="center">
-  <app-friend-list id="friends-list"></app-friend-list>
-  <app-transactions id="transactions" [withUserOfId]="4"></app-transactions>
+  <app-friend-list
+    id="friends-list"
+    (friendSelected)="selectFriend($event)"
+  ></app-friend-list>
+  <app-transactions
+    id="transactions"
+    [friend]="selectedFriend"
+  ></app-transactions>
 </div>

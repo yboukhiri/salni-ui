@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+}

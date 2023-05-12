@@ -1,32 +1,63 @@
-import { Component, Input } from '@angular/core';
-import { Deal } from '../../models/deal.model';
-import { Transaction } from '../../models/transaction.model';
-import { DealsService } from '../../services/deals.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  DealDto,
+  DealsService,
+  TransactionDto,
+  UserDto,
+} from 'src/app/generated-api';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateTransactionDialogComponent } from './create-transaction-dialog/create-transaction-dialog.component';
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
 })
-export class TransactionsComponent {
-  constructor(private dealsService: DealsService) {}
+export class TransactionsComponent implements OnChanges {
+  constructor(private dealsService: DealsService, public dialog: MatDialog) {}
 
-  deal: Deal | undefined;
+  deal: DealDto | undefined;
 
   @Input()
-  withUserOfId: number | undefined;
+  friend: UserDto | null = null;
 
-  ngOnInit(): void {
-    if (!this.withUserOfId) {
-      return;
-    }
-    this.dealsService.getDeal(this.withUserOfId).subscribe((deal) => {
-      console.log(deal);
-      this.deal = deal;
+  faPlus = faPlus;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateDeal();
+  }
+
+  isTransactionAccepted(transaction: TransactionDto): boolean {
+    return transaction.accepted;
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(CreateTransactionDialogComponent, {
+      data: this.friend,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.dealsService
+          .dealsControllerCreateTransaction(result)
+          .subscribe((transaction) => {
+            this.updateDeal();
+          });
+      }
     });
   }
 
-  isTransactionAccepted(transaction: Transaction): boolean {
-    return transaction.accepted;
+  updateDeal() {
+    if (!this.friend) {
+      return;
+    }
+    this.dealsService
+      .dealsControllerGetDealWithUserId(this.friend.id)
+      .subscribe({
+        next: (deal) => {
+          this.deal = deal;
+        },
+      });
   }
 }

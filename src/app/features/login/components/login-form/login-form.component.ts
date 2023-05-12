@@ -28,10 +28,8 @@ export class LoginFormComponent implements OnInit {
   }
 
   login() {
-    console.log(this.loginForm.value);
     // check if form is valid
     // if not, return
-    console.log(this.loginForm.valid);
     if (!this.loginForm.valid) {
       if (this.loginForm.get('email')?.hasError('required')) {
         this.snackbarService.error('Email is required');
@@ -42,8 +40,12 @@ export class LoginFormComponent implements OnInit {
       }
       return;
     }
-    if (!this.authenticationService.authenticate(this.loginForm.value)) {
-      this.snackbarService.error('Invalid credentials');
-    }
+    this.authenticationService
+      .authenticate(this.loginForm.value)
+      .subscribe((result) => {
+        if (!result) {
+          this.snackbarService.error('Invalid credentials');
+        }
+      });
   }
 }

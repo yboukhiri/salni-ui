@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserDto, UsersService } from 'src/app/generated-api';
 
 @Component({
@@ -11,10 +11,21 @@ export class FriendListComponent implements OnInit {
   constructor(private usersService: UsersService) {}
 
   friends: UserDto[] = [];
+  selectedFriend: UserDto | null = null;
+
+  @Output()
+  friendSelected: EventEmitter<UserDto> = new EventEmitter<UserDto>();
 
   ngOnInit(): void {
     this.usersService.usersControllerGetFriends().subscribe((friends) => {
       this.friends = friends;
+      this.selectedFriend = friends[0];
+      this.friendSelected.emit(friends[0]);
     });
+  }
+
+  selectFriend(friend: any) {
+    this.selectedFriend = friend;
+    this.friendSelected.emit(friend);
   }
 }

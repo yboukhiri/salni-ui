@@ -1,4 +1,9 @@
-<div *ngIf="friend" class="friend-item-container">
+<div
+  *ngIf="friend"
+  class="friend-item-container"
+  [ngClass]="{ selected: isSelected }"
+  (click)="selectFriend()"
+>
   <img
     [src]="'/assets/images/avatar.jpg'"
     alt="Profile Picture"

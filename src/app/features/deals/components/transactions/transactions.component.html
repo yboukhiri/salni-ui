@@ -1,29 +1,55 @@
-<div
-  *ngFor="let transaction of deal?.transactions"
-  class="transaction-container"
->
+<div class="transactions">
   <div
-    *ngIf="transaction.fromUserId === withUserOfId"
-    class="transaction-bubble transaction-left"
+    *ngIf="!deal?.transactions || deal?.transactions?.length === 0"
+    class="no-transactions"
   >
-    <div class="transaction-amount">{{ transaction.amount }} $</div>
-    <div class="transaction-time">
-      {{ transaction.createdAt | date : "shortTime" }}
-    </div>
-    <div class="transaction-status" *ngIf="!isTransactionAccepted(transaction)">
-      Pending
+    No transactions yet
+  </div>
+
+  <div
+    *ngIf="deal?.transactions && deal?.transactions?.length != undefined"
+    class="title"
+  >
+    <div
+      *ngFor="let transaction of deal?.transactions"
+      class="transaction-container"
+    >
+      <div
+        *ngIf="transaction.fromUserId === friend?.id"
+        class="transaction-bubble transaction-left"
+      >
+        <div class="transaction-amount">{{ transaction.amount }} $</div>
+        <div class="transaction-time">
+          {{ transaction.createdAt | date : "shortTime" }}
+        </div>
+        <div
+          class="transaction-status"
+          *ngIf="!isTransactionAccepted(transaction)"
+        >
+          Pending
+        </div>
+      </div>
+      <div
+        *ngIf="transaction.toUserId === friend?.id"
+        class="transaction-bubble transaction-right"
+      >
+        <div class="transaction-amount">{{ transaction.amount }} $</div>
+        <div class="transaction-time">
+          {{ transaction.createdAt | date : "shortTime" }}
+        </div>
+        <div
+          class="transaction-status"
+          *ngIf="!isTransactionAccepted(transaction)"
+        >
+          Waiting for approval
+        </div>
+      </div>
     </div>
   </div>
-  <div
-    *ngIf="transaction.toUserId === withUserOfId"
-    class="transaction-bubble transaction-right"
-  >
-    <div class="transaction-amount">{{ transaction.amount }} $</div>
-    <div class="transaction-time">
-      {{ transaction.createdAt | date : "shortTime" }}
-    </div>
-    <div class="transaction-status" *ngIf="!isTransactionAccepted(transaction)">
-      Waiting for approval
-    </div>
-  </div>
+</div>
+
+<div class="footer">
+  <button class="submit" (click)="openDialog()">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
 </div>

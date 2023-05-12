@@ -20,25 +20,35 @@ export class AuthenticationService {
   public currentUser$: Observable<string> =
     this.currentUserSubject$.asObservable();
 
-  public authenticate(login: Login) {
-    this.authApiService.authControllerLogin(login).subscribe({
-      next: (response) => {
-        localStorage.setItem('auth_token', response.access_token);
-        this.isAuthenticatedSubject$.next(true);
-        this.authApiService.authControllerGetCurrentUser().subscribe({
-          next: (response) => {
-            this.currentUserSubject$.next(response);
-            return true;
-          },
-          error: (error) => {
-            return false;
-          },
-        });
-      },
-      error: (error) => {
-        return false;
-      },
+  public authenticate(login: Login): Observable<boolean> {
+    return new Observable<boolean>((observer) => {
+      this.authApiService.authControllerLogin(login).subscribe({
+        next: (response) => {
+          localStorage.setItem('auth_token', response.access_token);
+          this.isAuthenticatedSubject$.next(true);
+          this.authApiService.authControllerGetCurrentUser().subscribe({
+            next: (response) => {
+              this.currentUserSubject$.next(response);
+              observer.next(true);
+              observer.complete();
+            },
+            error: (error) => {
+              observer.next(false);
+              observer.complete();
+            },
+          });
+        },
+        error: (error) => {
+          observer.next(false);
+          observer.complete();
+        },
+      });
     });
-    return false;
+  }
+
+  public logout() {
+    localStorage.removeItem('auth_token');
+    this.isAuthenticatedSubject$.next(false);
+    this.currentUserSubject$.next(null);
   }
 }

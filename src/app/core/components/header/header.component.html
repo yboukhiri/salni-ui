@@ -6,12 +6,19 @@
   />
   <nav class="navigation">
     <ul>
-      <li><a href="home">Home</a></li>
-      <li><a href="about">About</a></li>
-      <li><a href="contact">Contact</a></li>
-      <li><i class="fa-thin fa-right-from-bracket"></i></li>
+      <li>
+        <fa-icon [icon]="faUser" class="icon"></fa-icon>
+      </li>
+      <li>
+        <fa-icon [icon]="faBell" class="icon"></fa-icon>
+      </li>
+      <li>
+        <fa-icon
+          [icon]="faSignOutAlt"
+          class="icon"
+          (click)="logout()"
+        ></fa-icon>
+      </li>
     </ul>
   </nav>
 </header>
-
-<i class="fa-thin fa-right-from-bracket"></i>
